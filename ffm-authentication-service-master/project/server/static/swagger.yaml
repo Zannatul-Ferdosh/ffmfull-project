@@ -1,0 +1,361 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Auth Service API for FFM
+  description: "This is a digital platform, owned by The **[Tech Serve4 U, LLC](http://techserve4u.com)** <br />**Disclaimer:** You are not allowed to distribute, share, or sell this platform, services, and any contents to anyone for selling or public usages.<br/>**Contact for more details:** <info@techserve4u.com> <br />**Phone:** +1 (586) 834-8526"
+  license:
+    name: MIT
+servers:
+  - url: /
+tags:
+- name: FFM Operation Team
+- name: Company Manager
+- name: Web Dashboard
+- name: Mobile App User
+
+paths:
+  /api/v1/field-force/auth/register-user:
+    post:
+      tags:
+      - Mobile App User
+      summary: Register a new Mobile App User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                phone_number:
+                  type: string
+                  format: string
+                iso_code:
+                  type: string
+                  format: string
+                company_id:
+                  type: integer
+                  format: int64
+                first_name:
+                  type: string
+                  format: string
+                last_name:
+                  type: string
+                  format: string
+                nid:
+                  type: string
+                  format: string
+                designation:
+                  type: string
+                  format: string
+                department:
+                  type: string
+                  format: string
+      responses: 
+        '201':
+          description: User Successfully Registered
+        '400':
+          description: User registration failed
+        '404':
+          description: Company not found
+
+  /api/v1/field-force/auth/register-dashboard-user:
+    post:
+      tags:
+      - Company Manager
+      summary: Create a new company Manager under a company (Under ABC Delivery Company)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: string
+                company_id:
+                  type: integer
+                  format: int64
+                firstname:
+                  type: string
+                  format: string
+                lastname:
+                  type: string
+                  format: string
+                username:
+                  type: string
+                  format: string
+      responses: 
+        '201':
+          description: User Successfully Registered
+        '400':
+          description: User registration failed
+        '404':
+          description: Company not found
+
+  /api/v1/field-force/auth/register-admin-user:
+    post:
+      tags:
+      - FFM Operation Team
+      summary: Create FFM platform administrative user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: string
+                firstname:
+                  type: string
+                  format: string
+                lastname:
+                  type: string
+                  format: string
+                username:
+                  type: string
+                  format: string
+      responses: 
+        '201':
+          description: User Successfully Registered
+        '400':
+          description: User registration failed
+        '404':
+          description: Company not found
+
+  /api/v1/field-force/auth/register-company:
+    post:
+      tags:
+      - FFM Operation Team
+      summary: Create a new company (ABC Delivery Company)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  format: string
+                address:
+                  type: string
+                  format: string
+                tin:
+                  type: string
+                  format: string
+      responses: 
+        '201':
+          description: User Successfully Registered
+        '400':
+          description: User registration failed
+        '404':
+          description: Company not found
+
+  /api/v1/field-force/auth/user-login:
+    post:
+      tags:
+      - Mobile App User
+      summary: Login through a valid credential
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firebase_id:
+                  type: string
+                  format: string
+                phone_number:
+                  type: string
+                  format: string
+                phone_number_int:
+                  type: string
+                  format: string
+                iso_code:
+                  type: string
+                  format: string
+                secret_text:
+                  type: string
+                  format: string
+      responses: 
+        '200':
+          description: User Successfully Logged In
+        '400':
+          description: Wrong Phone or Int Code
+        '404':
+          description: User not found
+
+  /api/v1/field-force/auth/dashboard-user-login:
+    post:
+      tags:
+      - Web Dashboard
+      summary: Managers login through the valid credential
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: string
+      responses: 
+        '200':
+          description: Dashboard User Successfully Logged In
+        '400':
+          description: Wrong Email or Password
+        '404':
+          description: User not found
+
+  /api/v1/field-force/auth/authenticate-user:
+    get:
+      tags:
+      - Mobile App User
+      summary: Authenticate by the JWT token
+      responses: 
+        '200':
+          description: Success
+        '401':
+          description: Failed to Parse Auth Token
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/authenticate-dashboard-user:
+    get:
+      tags:
+      - Web Dashboard
+      summary: Managers authenticate through the JWT token
+      responses: 
+        '200':
+          description: Success
+        '401':
+          description: Failed to Parse Auth Token
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/refresh-token:
+    get:
+      tags:
+      - Web Dashboard
+      summary: Get a new JWT by exchanging older one for App User.
+      responses: 
+        '200':
+          description: Successfully refreshed token
+        '401':
+          description: Failed to Parse Auth Token
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/logout-user:
+    get:
+      tags:
+      - Mobile App User
+      summary: Log out from the mobile app as an app user
+      responses: 
+        '200':
+          description: Successfully logged out
+        '401':
+          description: Failed to Parse Auth Token
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/logout-dashboard-user:
+    get:
+      tags:
+      - Web Dashboard
+      summary: Log out from the dashboard as an FFM OT users or company Manager
+      responses: 
+        '200':
+          description: Successfully logged out
+        '401':
+          description: Failed to Parse Auth Token
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/get-company-list:
+    get:
+      tags:
+      - FFM Operation Team
+      summary: Display companies currently registered
+      responses: 
+        '200':
+          description: Success
+        '400':
+          description: Failed to Parse Auth Token
+        '401':
+          description: You do not have sufficient permission
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/get-company-users/{company_id}:
+    get:
+      tags:
+      - Company Manager
+      summary: List of mobile app users for a specific company
+      parameters:
+        - name: company_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: Success
+        '400':
+          description: Failed to Parse Auth Token
+        '401':
+          description: You do not have sufficient permission
+        '403':
+          description: Provide a valid Auth Token
+
+  /api/v1/field-force/auth/get-company-contacts:
+    get:
+      tags:
+      - Mobile App User
+      summary: Display representative list under a company
+      responses: 
+        '200':
+          description: Success
+        '400':
+          description: Failed to Parse Auth Token
+        '401':
+          description: You do not have sufficient permission
+        '403':
+          description: Provide a valid Auth Token
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+security:
+  - bearerAuth: [] 

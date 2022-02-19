@@ -1,0 +1,121 @@
+version: '3.5'
+
+services:
+  auth:
+    container_name: ffm_auth
+    image: shahedmehbub/ffm-auth-transformation:0.0.2
+    ports:
+      - "5001:8000"
+    networks:
+      - postgres
+    depends_on:
+      - "postgres"
+      - "pgadmin"
+    command: sh -c "/wait && python manage.py runserver"
+    environment:
+      - WAIT_HOSTS=postgres:5432
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+  
+  task:
+    container_name: ffm_task
+    image: shahedmehbub/ffm-task-transformation:0.0.1
+    ports:
+      - "5003:8000"
+    networks:
+      - postgres
+    depends_on:
+      - "postgres"
+      - "pgadmin"
+      - "auth"
+
+  usermanagement:
+    container_name: user_management
+    image: saifdev1642/backend 
+    ports:
+      - "5004:3000"
+    networks:
+      - postgres
+    depends_on:
+      - "postgres"
+      - "pgadmin"
+    command: sh -c "/wait && npm run start:dev"
+    environment:
+      - WAIT_HOSTS=auth:8000
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=120
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+
+  delivery:
+    container_name: delivery
+    image: saifdev1642/delivery 
+    ports:
+      - "5005:3000"
+    networks:
+      - postgres
+    depends_on:
+      - "postgres"
+      - "pgadmin"
+    command: sh -c "/wait && npm run start:dev"
+    environment:
+      - WAIT_HOSTS=usermanagement:3000
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  attendance:
+    container_name: attendance
+    image: saifdev1642/attendance 
+    ports:
+      - "5006:3000"
+    networks:
+      - postgres
+    depends_on:
+      - "postgres"
+      - "pgadmin"
+    command: sh -c "/wait && npm run start:dev"
+    environment:
+      - WAIT_HOSTS=usermanagement:3000
+      - WAIT_HOSTS_TIMEOUT=300
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-123TS4UTransformation}
+      POSTGRES_DB: field_force_db
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@fieldforce.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+       - pgadmin:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
+  
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+    postgres:
+    pgadmin:

@@ -1,0 +1,35 @@
+{
+  "name": "ffm",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 8000",
+    "build": "NODE_ENV=production next build",
+    "start": "NODE_ENV=production next start -p 8080",
+    "deploy": "gcloud app deploy --version main"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.9.12",
+    "@zeit/next-sass": "^1.0.1",
+    "axios": "^0.19.2",
+    "bootstrap": "^4.4.1",
+    "formik": "^2.1.4",
+    "google-maps-react": "^2.0.6",
+    "isomorphic-unfetch": "^3.0.0",
+    "jwt-decode": "^2.2.0",
+    "moment": "^2.24.0",
+    "next": "9.3.4",
+    "next-images": "^1.4.0",
+    "node-sass": "^4.14.0",
+    "pm2": "^4.5.1",
+    "react": "16.13.1",
+    "react-bootstrap": "^1.0.1",
+    "react-datepicker": "^2.14.1",
+    "react-dom": "16.13.1",
+    "react-map-gl": "^5.2.5",
+    "react-nextjs-toast": "^1.0.7",
+    "react-semantic-ui-datepickers": "^2.6.0-beta.0",
+    "react-toastify": "^5.5.0",
+    "semantic-ui-react": "^0.88.2"
+  }
+}

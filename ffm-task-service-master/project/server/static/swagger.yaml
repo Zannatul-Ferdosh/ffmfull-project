@@ -1,0 +1,347 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Task Service API for FFM
+  description: "This is a digital platform, owned by The **[Tech Serve4 U, LLC](http://techserve4u.com)** <br />**Disclaimer:** You are not allowed to distribute, share, or sell this platform, services, and any contents to anyone for selling or public usages.<br/>**Contact for more details:** <info@techserve4u.com> <br />**Phone:** +1 (586) 834-8526"
+  license:
+    name: MIT
+servers:
+  - url: /
+paths:
+  /api/v1/field-force/task/assign-task:
+    post:
+      summary: Assigns task to a user.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  format: string
+                is_paid:
+                  type: boolean
+                assigned_time:
+                  type: string
+                  format: date-time
+                assigned_location_lattitude:
+                  type: string
+                  format: string
+                assigned_location_longitude:
+                  type: string
+                  format: string
+                admin_id:
+                  type: integer
+                  format: int64
+                user_id:
+                  type: integer
+                  format: int64
+      responses: 
+        '201':
+          description: Task assign successful
+        '401':
+          description: This user is not assigned on this task
+        '403':
+          description: Request body must be non-empty
+        '404':
+          description: User/Admin not found
+
+  /api/v1/field-force/task/complete-task/{user_id}/{task_id}:
+    put:
+      summary: Completes a task for a given user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  format: string
+                is_paid:
+                  type: boolean
+                assigned_time:
+                  type: string
+                  format: date-time
+                assigned_location_lattitude:
+                  type: string
+                  format: string
+                assigned_location_longitude:
+                  type: string
+                  format: string
+                admin_id:
+                  type: integer
+                  format: int64
+                user_id:
+                  type: integer
+                  format: int64
+      responses: 
+        '201':
+          description: Successfully completed task
+        '401':
+          description: This user is not assigned on this task
+        '403':
+          description: Insertion failed to database
+        '404':
+          description: No task is found for this id
+          
+  /api/v1/field-force/task/update-note/{user_id}/{task_id}:
+    put:
+      summary: Updates a note for a task by an user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: string
+                  format: string
+      responses: 
+        '201':
+          description: Note updated
+        '401':
+          description: This user is not assigned on this task
+        '404':
+          description: No task is found for this id
+
+  /api/v1/field-force/task/update-payment/{user_id}/{task_id}:
+    put:
+      summary: Updates payment for a given task by an user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses: 
+        '201':
+          description: Payment updated
+        '401':
+          description: This user is not assigned on this task
+        '404':
+          description: No task is found for this id
+
+  /api/v1/field-force/task/admin-get-tasks/{admin_id}:
+    get:
+      summary: Gets a list for all the tasks assigned by given user.
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+
+      responses: 
+        '200':
+          description: Task list
+        '401':
+          description: This admin did not assigned this task
+        '404':
+          description: No task is found for this task
+
+  /api/v1/field-force/task/user-get-tasks/{user_id}:
+    get:
+      summary: Gets a list for all the tasks assigned for given user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+
+      responses: 
+        '200':
+          description: Task list
+        '401':
+          description: This user did not assigned this task
+        '404':
+          description: No task is found for this task
+    
+  /api/v1/field-force/task/get-task-details/{user_id}/{task_id}:
+    get:
+      summary: Gets details of a given task by user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: Task details
+        '401':
+          description: This user did not assigned this task
+        '404':
+          description: No task is found for this task
+
+  /api/v1/field-force/task/get-task-photos/{user_id}/{task_id}:
+    get:
+      summary: Gets a list for all photos of a given task by user.
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: Photo list
+        '401':
+          description: This user did not assigned this task
+        '404':
+          description: No photos are available for this task
+
+  /api/v1/field-force/task/upload-task-photo/{user_id}/{task_id}:
+    post:
+      summary: Uploads a task photo by a given user.
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+
+        - name: photo
+          in: formData
+          required: true
+          schema:
+            type: file
+
+      responses: 
+        '201':
+          description: Photo upload successful
+        '401':
+          description: This user did not assigned this task
+        '403':
+          description: Photo uploading failed
+
+  /api/v1/field-force/task/admin-delete-tasks/{admin_id}/{task_id}:
+    delete:
+      summary: Completes a task for a given user.
+      parameters:
+        - name: admin_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          
+        - name: task_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      responses: 
+        '200':
+          description: Successfully deleted task
+        '401':
+          description: This admin did not assigned this task
+        '403':
+          description: Database operation failed
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT 
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+security:
+  - bearerAuth: [] 

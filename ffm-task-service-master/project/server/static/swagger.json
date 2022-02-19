@@ -1,0 +1,471 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "description": "Task Service API",
+      "version": "1.0.0",
+      "title": "Task Service API for FFM",
+      "contact": {
+        "email": "ffm@techserve4u.com"
+      },
+      "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:8000"
+      }
+    ],
+    "tags": [
+      {
+        "name": "Assign Task",
+        "description": "Assigning task to a User"
+      },
+      {
+        "name": "Complete Task",
+        "description": "Complete an assigned Task"
+      },
+      {
+        "name": "Update Payment",
+        "description": "Update the payment for a task"
+      },
+      {
+        "name": "Update Note",
+        "description": "Update the note for a task"
+      },
+      {
+        "name": "Get Task by Admin",
+        "description": "Get a task detail for administration"
+      },
+      {
+        "name": "Get Task by User",
+        "description": "Get a task detail as User"
+      },
+      {
+        "name": "Upload Task Photo",
+        "description": "Upload photo for a task"
+      },
+      {
+        "name": "Get Task Photo",
+        "description": "Get the photo for a task"
+      },
+      {
+        "name": "Get Task Details",
+        "description": "Get the whole task details by User & Task ID"
+      },
+      {
+        "name": "Delete Task by Admin",
+        "description": "Deletes a task with Admin priviledges"
+      }
+    ],
+    "paths": {
+      "/api/v1/field-force/task/assign-task": {        
+        "post": {    
+          "tags": [
+            "Assign Task"
+          ],
+          "summary": "Assigning task to a User",
+          "requestBody": {
+            "description": "Assigning task to a User",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/assigntask"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "security": {
+            "bearerAuth": []
+          },
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/complete-task/<int:user_id>/<int:task_id>": {        
+        "post": {    
+          "tags": [
+            "Complete Task"
+          ],
+          "summary": "Complete an assigned Task",
+          "requestBody": {
+            "description": "Complete an assigned Task",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/completetask"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/update-payment/<int:user_id>/<int:task_id>": {        
+        "post": {
+          "tags": [
+            "Update Payment"
+          ],
+          "summary": "Update the payment for a task",
+          "requestBody": {
+            "description": "Update the payment for a task",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/userloginpostbody"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/update-note/<int:user_id>/<int:task_id>": {        
+        "post": {
+          "tags": [
+            "Update Note"
+          ],
+          "summary": "Update the note for a task",
+          "requestBody": {
+            "description": "Update the note for a task",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/noteupdate"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/admin-get-tasks/<int:admin_id>": {        
+        "get": {
+          "tags": [
+            "Get Task by Admin"
+          ],
+          "summary": "Get a task detail for administration",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/user-get-tasks/<int:user_id>": {        
+        "get": {
+          "tags": [
+            "Get Task by User"
+          ],
+          "summary": "Get assigned tasks for a user",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/upload-task-photo/<int:user_id>/<int:task_id>": {        
+        "get": {
+          "tags": [
+            "Upload Task Photo"
+          ],
+          "summary": "Upload photo for a task",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/uploadphoto"
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/get-task-photos/<int:user_id>/<int:task_id>": {        
+        "get": {
+          "tags": [
+            "Get Task Photo"
+          ],
+          "summary": "Get the photo for a task",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/get-task-details/<int:user_id>/<int:task_id>": {        
+        "get": {
+          "tags": [
+            "Get Task Details"
+          ],
+          "summary": "Get the whole task details by User & Task ID",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      },
+      "/api/v1/field-force/task/admin-delete-tasks/<int:admin_id>/<int:task_id>": {        
+        "post": {
+          "tags": [
+            "Delete Task by Admin"
+          ],
+          "summary": "Deletes a task with Admin priviledges",
+          "requestBody": {
+            "description": "Deletes a task with Admin priviledges",
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/companycreate"
+                }
+              }
+            }
+          },
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "201": {
+              "description": "OK",
+              "schema": {
+                "$ref": "#/components/schemas/id"
+              }
+            },
+            "400": {
+              "description": "Failed. Bad post data."
+            }
+          }
+        }
+      }
+      
+      
+    },
+    "components": {
+      "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        }
+      },
+      "schemas": {
+        "id": {
+          "properties": {
+            "uuid": {
+              "type": "string"
+            }
+          }
+        },
+        "assigntask": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "format": "string"
+            },
+            "is_paid": {
+              "type": "boolean",
+              "format": "boolean"
+            },
+            "assigned_time": {
+                "type": "string",
+                "format": "string"
+              },
+              "assigned_location_lattitude": {
+                "type": "string",
+                "format": "string"
+              },
+              "assigned_location_longitude": {
+                "type": "string",
+                "format": "string"
+              },
+              "assigned_address": {
+                "type": "string",
+                "format": "string"
+              },
+              "admin_id": {
+                "type": "string",
+                "format": "string"
+              },
+              "user_id": {
+                "type": "string",
+                "format": "string"
+              }
+          }
+        },
+        "completetask": {
+          "type": "object",
+          "properties": {
+            "task_complete_location_lattitude": {
+              "type": "string",
+              "format": "string"
+            },
+            "task_complete_location_longitude": {
+              "type": "string",
+              "format": "string"
+            },
+            "notes": {
+                "type": "string",
+                "format": "string"
+              }
+          }
+        },
+        "noteupdate": {
+            "type": "object",
+            "properties": {
+              "notes": {
+                "type": "string",
+                "format": "string"
+              }
+            }
+          },
+        "uploadphoto": {
+            "type": "object",
+            "properties": {
+              "photo": {
+                "type": "file",
+                "format": "jpeg"
+              }
+            }
+          }
+      }
+    }
+  }
+
+  - title
+  - is_paid
+  - assigned_time
+  - assigned_location_lattitude
+  - assigned_location_longitude
+  - assigned_address
+  - admin_id
+  - user_id
+properties:
+  title:
+    type: string
+    format: string
+  is_paid:
+    type: boolean
+  assigned_time:
+    type: string
+    format: date-time
+  assigned_location_lattitude:
+    type: string
+    format: string
+  assigned_location_longitude:
+    type: string
+    format: string
+  admin_id:
+    type: integer
+    format: int64
+  user_id:
+    type: integer
+    format: int64
