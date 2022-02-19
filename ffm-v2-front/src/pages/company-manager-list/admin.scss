@@ -1,0 +1,39 @@
+.admin_form {
+  .d-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .error {
+    border-color: red;
+    &:focus {
+      outline: none;
+      border-color: red;
+    }
+  }
+  .error_text {
+    color: red;
+    display: block;
+  }
+
+  .required {
+    color: red;
+  }
+  .ant-form-item-label > label {
+    float: left;
+  }
+
+  .input_item {
+    display: flex;
+    margin: 18px 0;
+    .width_100 {
+      width: 100%;
+      input {
+        width: 100%;
+      }
+    }
+    label {
+      flex-basis: 25%;
+    }
+  }
+}

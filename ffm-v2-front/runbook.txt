@@ -1,0 +1,3 @@
+- git pull
+- sudo docker build -t ffm-front:v1.0.0 .
+- sudo docker service update —-image ffm-front:v1.0.0 ffm-front
