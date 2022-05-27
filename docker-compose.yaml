@@ -1,0 +1,40 @@
+version: '3'
+services:
+  nginx:
+    image: zannatmim/nginx:1
+    ports:
+      - "80:80"
+
+    depends_on:
+      - postgres
+      - auth
+      - user
+      - front
+   
+  front:
+    image: zannatmim/front:1
+    ports:
+      - "3002:3000"
+    depends_on:
+      - postgres
+      - auth
+      - user
+  auth:
+    image: zannatmim/auth:2
+    restart: always
+    ports:
+      - "8001:8000"
+    depends_on:
+      - postgres
+  user:
+    restart: always
+    image: zannatmim/user:1
+    ports:
+      - "3001:3000"
+    depends_on:
+      - postgres
+      - auth
+  postgres:
+    image: zannatmim/postgres:1
+    ports:
+      - "5432:5432"
